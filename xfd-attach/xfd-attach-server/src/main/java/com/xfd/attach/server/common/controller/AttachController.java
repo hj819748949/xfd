@@ -1,7 +1,9 @@
 package com.xfd.attach.server.common.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.context.annotation.Scope;
@@ -114,6 +116,47 @@ public class AttachController extends AbstractController
 		} catch (Exception e)
 		{
 			log.error(e.getMessage(), e);
+		}
+	}
+	
+	/**
+	 * 百度富文本框上传
+	 * @param file
+	 * @return
+	 */
+	@RequestMapping("/ueupload")
+	@ResponseBody
+	public Map<String, String> ueupload(MultipartFile file) 
+	{
+		// 返回值
+		Map<String, String> result = new HashMap<String, String>();
+		try 
+		{
+			if (CommonUtil.isEmpty(file))
+			{
+				result.put("state", "ERROR");
+				return result;
+			}
+			// 打印日志
+			log.info("开始上传文件{}...", file.getOriginalFilename());
+			// 执行上传
+			AttachInfoVO attachInfo = doUpload(CommonUtil.getUid(), file);
+			// 处理路径, http路径永远是  /
+			// 设置处理的路径
+			attachInfo.setStoragePath(PathUtil.eraseHttpSeparator(attachInfo.getStoragePath()) + "?id=" + attachInfo.getId());
+			// 打印日志
+			log.info("文件{}上传完毕...", file.getOriginalFilename());
+			// 文件上传完毕, 返回的参数比较特殊
+			result.put("state", "SUCCESS");
+			result.put("title", attachInfo.getFileName());
+			result.put("original", attachInfo.getFileName());
+			result.put("url", getBasePath().append("/attach/download?id=").append(attachInfo.getId()).toString());
+			return result;
+		} catch (Exception e)
+		{
+			log.error(e.getMessage(), e);
+			result.put("state", "ERROR");
+			return result;
 		}
 	}
 	
