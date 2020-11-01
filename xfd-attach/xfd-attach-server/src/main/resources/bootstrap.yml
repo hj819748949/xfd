@@ -1,0 +1,10 @@
+server:  port: 8080
+spring:
+  application:
+    name: attach-server  cloud:    nacos:      username: nacos
+      password: nacos
+      discovery:        server-addr: 127.0.0.1:8848             metadata: 
+          ctxpath: ${server.servlet.context-path:}    # 自定义注册元数据        # group: DEFAULT_GROUP
+      config:        name: ${spring.application.name}
+        # group: DEFAULT_GROUP
+        file-extension: propertiesdubbo:  application:    id: ${spring.application.name}    name: ${spring.application.name}    qos-port: 8000attach:  servertype: 0                # 默认本地存储, 后续可以考虑进行扩展  storagedir: ../attachs       # 存储的路径, 默认就是按照这个来进行存储        

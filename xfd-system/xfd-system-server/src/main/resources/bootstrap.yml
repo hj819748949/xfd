@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: system-server  cloud:    nacos:      username: nacos
+      password: nacos
+      discovery:        server-addr: 127.0.0.1:8848               # group: DEFAULT_GROUP
+      config:        name: ${spring.application.name}
+        # group: DEFAULT_GROUP
+        file-extension: properties

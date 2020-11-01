@@ -1,0 +1,14 @@
+target
+classes
+org.eclipse.wst.common.project.facet.core.xml
+org.eclipse.wst.common.component
+*.prefs
+.settings
+classes
+*.class
+.project
+*.project
+.classpath
+*.classpath
+*.class
+.class
